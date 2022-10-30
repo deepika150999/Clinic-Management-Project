@@ -1,0 +1,117 @@
+﻿@model TheStoneClinic.Models.AppointmentDetail
+
+@{
+    ViewData["Title"] = "Book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var doctorDetails = ViewBag.DoctorDetails;    
+    var patientDetails = ViewBag.PatientDetails;
+    List<TheStoneClinic.Models.General.doc> doctorList = new List<TheStoneClinic.Models.General.doc>();
+    foreach (var docitem in doctorDetails)
+    {
+        TheStoneClinic.Models.General.doc docitems = new TheStoneClinic.Models.General.doc();
+        docitems.DoctorId = docitem.DoctorId;
+        docitems.Specialization = docitem.Specialization;
+        docitems.FirstName = docitem.FirstName;
+        docitems.LastName= docitem.LastName;
+        docitems.IDSpec = docitem.DoctorId + "~" + docitem.Specialization +"~"+ docitem.FirstName +" "+docitem.LastName;       doctorList.Add(docitems);
+        }
+    List<TheStoneClinic.Models.General.patient> PatientList = new List<TheStoneClinic.Models.General.patient>();
+    foreach (var patitem in patientDetails)
+    {
+        TheStoneClinic.Models.General.patient patitems = new TheStoneClinic.Models.General.patient();
+        patitems.PatientId = patitem.PatientId;
+        patitems.FirstName = patitem.FirstName;
+        patitems.LastName = patitem.LastName;
+        patitems.IDSpec = patitem.PatientId + "~" +  patitem.FirstName + " " + patitem.LastName ;
+        PatientList.Add(patitems);
+    }    
+}
+<h1>Book Appointment</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Book">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                <label asp-for="PatientId" class="control-label">Patient Name</label><br/>
+                <select class="form-select" name="patient" id="patient" asp-for="PatientId" onchange="onPatientChange()" required>
+                    <option value="" selected>Selected</option>
+
+                             @foreach (var item in PatientList)
+                            {
+                    <option value="@item.IDSpec">@item.FirstName @item.LastName</option>
+    }
+                </select>
+            </div>
+             <div class="form-group">
+                <label asp-for="DoctorName" class="control-label">DoctorName</label><br/>
+                <select class="form-select" name="Doctor" id="Doctor" asp-for="DoctorId" onchange="onDoctorChange()" required>
+                    <option value="" selected>Selected</option>
+                    @foreach (var Doc in doctorList)
+                            {
+                        <option value="@Doc.IDSpec">@Doc.FirstName @Doc.LastName</option>}
+}
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Specialization" class="control-label"></label>
+                <input asp-for="Specialization" class="form-control" id="Specialization" required />
+                <span asp-validation-for="Specialization" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppointmentDate" class="control-label"></label>
+                <input asp-for="AppointmentDate" class="form-control" id="AppointmentDate" type="date" required />
+                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppointmentTime" class="control-label"></label>
+                <input asp-for="AppointmentTime" class="form-control" required />
+                <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppointmentDuration" class="control-label"></label><br />
+
+                <select asp-for="AppointmentDuration" class="form-select" required>
+                    <option>7am-8am</option>
+                    <option>8am-9am</option>
+                    <option>9am-10am</option>
+                    <option>11am-12pm</option>
+                    <option>12pm-1pm</option>
+                    <option>2pm-3pm</option>
+                    <option>3pm-4pm</option>
+                    <option>6pm-7pm</option>
+                    <option>7pm-8pm</option>
+                    <option>10pm-11pm</option>
+                    </select>
+            </div>
+            <input type="hidden" asp-for="PatientId"/>
+            <input type="hidden"asp-for="DoctorId"/>
+            <input type="hidden" asp-for="PatientName" />
+            <input type="hidden" asp-for="DoctorName" />
+            <div class="form-group">
+                <input type="submit" value="Book Appointment" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="AppointmentDetails">Back to List</a>
+</div>
+<script>
+    function onDoctorChange() {
+        debugger;
+        var DocId = document.getElementById("Doctor").value;
+        document.getElementById("Specialization").value = DocId.split("~")[1];
+        document.getElementById("DoctorId").value = DocId.split("~")[0];
+        document.getElementById("DoctorName").value = DocId.split("~")[2];
+    }
+  
+    function onPatientChange() {
+        debugger;
+        var patId = document.getElementById("patient").value;
+        document.getElementById("PatientId").value = patId.split("~")[0];
+        document.getElementById("PatientName").value = patId.split("~")[1];
+    }
+</script>
+

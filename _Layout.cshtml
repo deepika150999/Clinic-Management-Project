@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TheStoneClinic</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TheStoneClinic.styles.css" asp-append-version="true" />
+</head>
+<script type="text/javascript">
+    function ShowHideMenu() {
+        var url = window.location.href;
+        if (url.split('/')[4] == "Login") {
+            $("#pgWelcome").show();
+            $("#pgLogin").hide();
+            $("#pgHome").hide();
+            $("#pgLogout").hide();
+            $("#pgDoctor").hide();
+            $("#pgPatient").hide();
+            $("#pgBook").hide();
+        }
+        else if (url.split('/')[4] == "" || url.split('/')[4] == undefined || url.split('/')[3] == "") {
+            $("#pgLogin").show();
+            $("#pgHome").hide();
+            $("#pgWelcome").hide();
+            $("#pgLogout").hide();
+            $("#pgDoctor").hide();
+            $("#pgPatient").hide();
+            $("#pgBook").hide();
+        }
+        else {
+            $("#pgHome").show();
+            $("#pgLogin").hide();
+            $("#pgWelcome").hide();
+            $("#pgLogout").show();
+            $("#pgDoctor").show();
+            $("#pgPatient").show();
+            $("#pgBook").show();
+        }    }
+    
+</script>
+<body onload="ShowHideMenu();">
+    <header>
+        <div class="row">
+            <div class="col-6">
+                <img src="~/stone-clinic-logo.png" style="width:100px;height:100px;" />
+
+            </div>
+            <div class="col-6" style="padding: 30px;font-weight: bolder;">
+                <div class="row">
+                    <div class="col-2" id="pgHome" style="position: fixed;right: 450px;"><a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Admin">Home</a></div>
+                    <div class="col-2" id="pgDoctor" style="position: fixed;right: 350px;"><a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Doctor">Doctor</a></div>
+                    <div class="col-2" id="pgPatient" style="position: fixed;right: 250px;"><a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Patients">Patient</a></div>
+                    <div class="col-2" id="pgBook" style="position: fixed;right: 150px;"><a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AppointmentDetails">Book Appointment</a></div>
+                    <div class="col-2" id="pgWelcome" style="position: fixed;right: 0px;"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Welcome</a></div>
+                    <div class="col-2" id="pgLogin" style="position: fixed;right: 0px;"><a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Login">Login</a></div>
+                    <div class="col-2" id="pgLogout" style="position: fixed;right: 0px;"><a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Logout">Logout</a></div>
+                </div>
+               
+                @*<a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Book" id="pgBook">Book Appointments</a>*@
+
+            </div>
+
+        </div>
+       
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-white">
+        <div class="container ">
+            &copy; 2022 - THE STONE CLINIC #DeepikaKumaresan - <a class="text-white" asp-area=""  asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
